@@ -48,7 +48,7 @@ export function Combobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
+          className="w-full justify-between bg-background hover:bg-background hover:text-white"
         >
           {value
             ? options.find((option) => option.value === value)?.label
@@ -73,7 +73,11 @@ export function Combobox({
                     onValueChange(option.value === value ? "" : option.value);
                     setOpen(false);
                   }}
-                  className={cn(value === option.value && "font-medium")}
+                  className={cn(
+                    value === option.value
+                      ? "font-medium text-blue-500"
+                      : "text-black"
+                  )}
                 >
                   {option.label}
                 </CommandItem>

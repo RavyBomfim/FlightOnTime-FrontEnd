@@ -4,16 +4,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { apiService } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Plane } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -40,16 +32,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-indigo-100 p-4">
-      <Card className="w-full max-w-md">
+    <div className="h-full flex items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-sm border-none">
         <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center mb-4">
-            <Plane className="h-12 w-12 text-blue-600" />
-          </div>
-          <CardTitle className="text-2xl text-center">Flight on Time</CardTitle>
-          <CardDescription className="text-center">
-            Predição de atrasos de voos com IA
-          </CardDescription>
+          <CardTitle className="text-2xl text-center font-semibold">
+            Login
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -58,35 +46,45 @@ export default function LoginPage() {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-
+            <div>
+              <Button className="cursor-pointer px-0 mb-2 w-full bg-background">
+                <img
+                  src="/logo-google.png"
+                  alt="Google logo"
+                  className="inline-block w-6 h-6 mr-2"
+                />{" "}
+                Fazer login com Google
+              </Button>
+            </div>
+            <div className="flex justify-center items-center gap-2 opacity-60">
+              <hr className="w-full" /> ou <hr className="w-full" />
+            </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="seu@email.com"
+                placeholder="Email"
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setEmail(e.target.value)
                 }
+                className="bg-background border-none"
                 required
               />
             </div>
-
             <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Senha"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setPassword(e.target.value)
                 }
+                className="bg-background border-none"
                 required
               />
             </div>
-
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Entrando..." : "Entrar"}
             </Button>
@@ -94,7 +92,7 @@ export default function LoginPage() {
 
           <div className="mt-4 text-center text-sm">
             Não tem uma conta?{" "}
-            <Link to="/register" className="text-blue-600 hover:underline">
+            <Link to="/register" className="text-primary hover:underline">
               Registre-se
             </Link>
           </div>

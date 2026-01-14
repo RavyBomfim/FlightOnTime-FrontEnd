@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 import { useData } from "@/contexts/DataContext";
 import { apiService, type FlightPredictionResponse } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -17,28 +15,25 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Combobox } from "@/components/ui/combobox";
 import {
-  Plane,
-  LogOut,
-  List,
   Cloud,
   Wind,
   Droplets,
   TrendingUp,
-  Calendar,
   MapPin,
+  Thermometer,
 } from "lucide-react";
 
 export default function DashboardPage() {
   const [airline, setAirline] = useState("");
   const [originIcao, setOriginIcao] = useState("");
   const [destinationIcao, setDestinationIcao] = useState("");
-  const [scheduledDeparture, setScheduledDeparture] = useState("");
+  const [departureDate, setDepartureDate] = useState("");
+  const [departureTime, setDepartureTime] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [prediction, setPrediction] = useState<FlightPredictionResponse | null>(
     null
   );
-  const { logout } = useAuth();
   const {
     airlines,
     airports,
@@ -47,7 +42,6 @@ export default function DashboardPage() {
     refetch,
     refetchFlights,
   } = useData();
-  const navigate = useNavigate();
 
   const capitalize = (str: string) => {
     const exceptions = ["de", "da", "dos", "do", "das", "e"];
@@ -87,20 +81,22 @@ export default function DashboardPage() {
     setLoading(true);
     setPrediction(null);
 
-    // Debug: verificar valores
-    if (!airline || !originIcao || !destinationIcao || !scheduledDeparture) {
+    if (
+      !airline ||
+      !originIcao ||
+      !destinationIcao ||
+      !departureDate ||
+      !departureTime
+    ) {
       setError(
-        `Campos vazios detectados! airline: "${airline}", origin: "${originIcao}", destination: "${destinationIcao}", date: "${scheduledDeparture}"`
+        `Campos vazios detectados! airline: "${airline}", origin: "${originIcao}", destination: "${destinationIcao}", date: "${departureDate}", time: "${departureTime}"`
       );
       setLoading(false);
       return;
     }
 
     try {
-      // Converter datetime-local para formato ISO esperado pelo backend
-      const formattedDate = scheduledDeparture.includes("T")
-        ? scheduledDeparture + ":00"
-        : scheduledDeparture;
+      const formattedDate = `${departureDate}T${departureTime}:00`;
 
       const requestData = {
         companhia: airline,
@@ -109,14 +105,9 @@ export default function DashboardPage() {
         data_partida: formattedDate,
       };
 
-      console.log("Dados antes de enviar:", requestData);
-
       const response = await apiService.predictFlight(requestData);
-      console.log("Resposta recebida:", response);
       setPrediction(response);
 
-      // Revalida o histórico de voos após predição bem-sucedida
-      console.log("🔄 Revalidando histórico após predição");
       refetchFlights();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro ao fazer predição");
@@ -125,52 +116,18 @@ export default function DashboardPage() {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
   const formatProbability = (prob: number) => {
     if (typeof prob !== "number" || isNaN(prob)) return "0.0%";
     return (prob * 100).toFixed(1) + "%";
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Plane className="h-8 w-8 text-blue-600" />
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  Flight on Time
-                </h1>
-                <p className="text-sm text-gray-500">
-                  Predição de Atrasos de Voos
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Button variant="outline" onClick={() => navigate("/flights")}>
-                <List className="h-4 w-4 mr-2" />
-                Histórico
-              </Button>
-              <Button variant="outline" onClick={handleLogout}>
-                <LogOut className="h-4 w-4 mr-2" />
-                Sair
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
+    <div className="h-full bg-background flex items-center justify-center">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Form Card */}
-          <Card>
+          <Card className="border-none">
             <CardHeader>
               <CardTitle>Nova Predição</CardTitle>
               <CardDescription>
@@ -267,19 +224,34 @@ export default function DashboardPage() {
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="scheduledDeparture">
-                        Data e Hora de Partida
-                      </Label>
-                      <Input
-                        id="scheduledDeparture"
-                        type="datetime-local"
-                        value={scheduledDeparture}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setScheduledDeparture(e.target.value)
-                        }
-                        required
-                      />
+                    <div className="flex gap-3">
+                      <div className="space-y-2 w-full">
+                        <Label htmlFor="departureDate">Data de Partida</Label>
+                        <Input
+                          id="departureDate"
+                          type="date"
+                          value={departureDate}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setDepartureDate(e.target.value)
+                          }
+                          className="bg-background [&::-webkit-calendar-picker-indicator]:invert"
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2 w-full">
+                        <Label htmlFor="departureTime">Hora de Partida</Label>
+                        <Input
+                          id="departureTime"
+                          type="time"
+                          value={departureTime}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setDepartureTime(e.target.value)
+                          }
+                          className="bg-background [&::-webkit-calendar-picker-indicator]:invert"
+                          required
+                        />
+                      </div>
                     </div>
 
                     <Button
@@ -297,14 +269,14 @@ export default function DashboardPage() {
 
           {/* Results Card */}
           {prediction && (
-            <Card className="lg:sticky lg:top-8 h-fit">
+            <Card className="lg:sticky lg:top-8 h-fit border-none">
               <CardHeader>
                 <CardTitle>Resultado da Predição</CardTitle>
                 <CardDescription>Análise preditiva do voo</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Flight Status */}
-                <div className="text-center p-6 bg-linear-to-br from-blue-50 to-indigo-50 rounded-lg">
+                <div className="text-center p-6 bg-background to-indigo-50 rounded-lg">
                   <div className="mb-4">
                     <Badge
                       variant={
@@ -365,7 +337,9 @@ export default function DashboardPage() {
                     <div>
                       <p className="text-gray-500">Partida</p>
                       <p className="font-semibold">
-                        {new Date(scheduledDeparture).toLocaleString("pt-BR", {
+                        {new Date(
+                          `${departureDate}T${departureTime}`
+                        ).toLocaleString("pt-BR", {
                           day: "2-digit",
                           month: "2-digit",
                           hour: "2-digit",
@@ -383,21 +357,21 @@ export default function DashboardPage() {
                     Condições Meteorológicas
                   </h3>
                   <div className="grid grid-cols-3 gap-3">
-                    <div className="text-center p-3 bg-blue-50 rounded-lg">
-                      <Calendar className="h-5 w-5 mx-auto mb-1 text-blue-600" />
+                    <div className="text-center p-3 bg-background rounded-lg">
+                      <Thermometer className="h-5 w-5 mx-auto mb-1 text-blue-600" />
                       <p className="text-xs text-gray-500">Temperatura</p>
                       <p className="font-semibold text-sm">
                         {prediction.weather.temperature}
                       </p>
                     </div>
-                    <div className="text-center p-3 bg-blue-50 rounded-lg">
+                    <div className="text-center p-3 bg-background rounded-lg">
                       <Droplets className="h-5 w-5 mx-auto mb-1 text-blue-600" />
                       <p className="text-xs text-gray-500">Precipitação</p>
                       <p className="font-semibold text-sm">
                         {prediction.weather.precipitation}
                       </p>
                     </div>
-                    <div className="text-center p-3 bg-blue-50 rounded-lg">
+                    <div className="text-center p-3 bg-background rounded-lg">
                       <Wind className="h-5 w-5 mx-auto mb-1 text-blue-600" />
                       <p className="text-xs text-gray-500">Vento</p>
                       <p className="font-semibold text-sm">

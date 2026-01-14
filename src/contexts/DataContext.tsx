@@ -30,9 +30,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const { token } = useAuth();
 
-  // Limpa o cache quando o token muda (login/logout)
   useEffect(() => {
-    console.log("🔄 Token mudou - limpando cache");
     setAirlines([]);
     setAirports([]);
     setFlights([]);
@@ -49,8 +47,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       setError(null);
 
-      console.log("🔄 DataContext: Buscando dados do backend...");
-
       const [airlinesData, airportsData] = await Promise.all([
         apiService.getAirlines(),
         apiService.getAirports(),
@@ -58,9 +54,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
       setAirlines(airlinesData);
       setAirports(airportsData);
-      console.log("✅ DataContext: Dados carregados e cacheados");
     } catch (err) {
-      console.error("❌ DataContext: Erro ao carregar dados:", err);
       setError(err instanceof Error ? err.message : "Erro ao carregar dados");
     } finally {
       setIsLoading(false);
@@ -68,15 +62,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
   }, [token]);
 
   useEffect(() => {
-    // Se já tem dados em cache, limpa o erro e não busca novamente
     if (airlines.length > 0 && airports.length > 0) {
       setError(null);
       setIsLoading(false);
-      console.log("✅ DataContext: Usando dados do cache");
       return;
     }
 
-    // Só busca se ainda não tem dados em cache
     if (token && airlines.length === 0 && airports.length === 0) {
       fetchData();
     }
@@ -90,12 +81,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
     if (!token) return;
 
     try {
-      console.log("🔄 DataContext: Buscando histórico de voos...");
       const flightsData = await apiService.getFlights();
       setFlights(flightsData);
-      console.log("✅ DataContext: Histórico carregado e cacheado");
     } catch (err) {
-      console.error("❌ DataContext: Erro ao carregar histórico:", err);
     }
   };
 
