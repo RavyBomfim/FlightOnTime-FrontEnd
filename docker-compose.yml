@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flightontime-frontend
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:8080/api}
+    restart: unless-stopped
+    networks:
+      - flightontime-network
+
+networks:
+  flightontime-network:
+    driver: bridge

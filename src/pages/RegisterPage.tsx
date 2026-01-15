@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import { useAuth } from "@/contexts/AuthContext";
 import { apiService } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function RegisterPage() {
@@ -18,6 +15,7 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -52,6 +50,34 @@ export default function RegisterPage() {
     }
   };
 
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    try {
+      if (!credentialResponse.credential) {
+        throw new Error("Credencial do Google não recebida");
+      }
+
+      const response = await apiService.googleLogin(
+        credentialResponse.credential
+      );
+      login(response.token);
+      navigate("/dashboard");
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Erro ao fazer login com Google"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    setError("Erro ao fazer login com Google");
+  };
+
   return (
     <div className="h-full flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm border-none">
@@ -74,15 +100,14 @@ export default function RegisterPage() {
               </Alert>
             )}
 
-            <div>
-              <Button className="cursor-pointer px-0 mb-2 w-full bg-background">
-                <img
-                  src="/logo-google.png"
-                  alt="Google logo"
-                  className="inline-block w-6 h-6 mr-2"
-                />{" "}
-                Fazer login com Google
-              </Button>
+            <div className="flex justify-center">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                text="signup_with"
+                width="340"
+                theme="filled_blue"
+              />
             </div>
 
             <div className="flex justify-center items-center gap-2 opacity-60">

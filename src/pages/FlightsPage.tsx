@@ -39,13 +39,27 @@ export default function FlightsPage() {
   }, [flights, filter]);
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    if (!dateString) return "N/A";
+
+    try {
+      // Formato: "2026-01-15T14:30:00"
+      const date = new Date(dateString.replace(" ", "T"));
+
+      if (isNaN(date.getTime())) {
+        return "Data inválida";
+      }
+
+      return date.toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch (error) {
+      console.error("Erro ao formatar data:", dateString, error);
+      return "Erro na data";
+    }
   };
 
   const formatProbability = (prob: number) => {
@@ -121,7 +135,7 @@ export default function FlightsPage() {
                         <TableCell>{flight.origin}</TableCell>
                         <TableCell>{flight.destination}</TableCell>
                         <TableCell>
-                          {formatDate(flight.scheduledDeparture)}
+                          {formatDate(flight.scheduledDepartureDate)}
                         </TableCell>
                         <TableCell>
                           {(flight.distanceMeters / 1000).toFixed(0)} km

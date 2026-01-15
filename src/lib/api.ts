@@ -1,4 +1,5 @@
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 
 export interface LoginRequest {
   email: string;
@@ -39,7 +40,7 @@ export interface Flight {
   origin: string;
   destination: string;
   distanceMeters: number;
-  scheduledDeparture: string;
+  scheduledDepartureDate: string;
   scheduledArrival: string;
   predictionResult: string;
   predictionProbability: number;
@@ -152,6 +153,21 @@ class ApiService {
     if (!response.ok) {
       const error = await response.text();
       throw new Error(error || "Erro ao fazer login");
+    }
+
+    return response.json();
+  }
+
+  async googleLogin(googleToken: string): Promise<LoginResponse> {
+    const response = await fetch(`${API_BASE_URL}/auth/google`, {
+      method: "POST",
+      headers: this.getHeaders(),
+      body: JSON.stringify({ token: googleToken }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error || "Erro ao fazer login com Google");
     }
 
     return response.json();

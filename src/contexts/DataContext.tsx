@@ -83,7 +83,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
     try {
       const flightsData = await apiService.getFlights();
       setFlights(flightsData);
-    } catch (err) {
+    } catch (_err) {
+      // Silently fail - flights são opcionais
     }
   };
 

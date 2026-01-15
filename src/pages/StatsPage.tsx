@@ -33,7 +33,7 @@ export default function StatsPage() {
   const [stats, setStats] = useState<FlightStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { airports } = useData();
+  const { airports, airlines } = useData();
 
   useEffect(() => {
     loadStats();
@@ -57,6 +57,16 @@ export default function StatsPage() {
   const getAirportName = (code: string) => {
     const airport = airports.find((a) => a.airportCode === code);
     return airport ? airport.airportName : code;
+  };
+
+  const truncateText = (text: string, maxLength: number = 30) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + "...";
+  };
+
+  const getAirlineName = (code: string) => {
+    const airline = airlines.find((a) => a.airlineCode === code);
+    return airline ? airline.airlineName : code;
   };
 
   const formatPercentage = (value: number) => {
@@ -200,7 +210,7 @@ export default function StatsPage() {
                   .map((stat) => (
                     <TableRow key={stat.airline}>
                       <TableCell className="font-medium">
-                        {stat.airline}
+                        {getAirlineName(stat.airline)}
                       </TableCell>
                       <TableCell className="text-right">
                         {stat.totalFlights}
@@ -347,50 +357,62 @@ export default function StatsPage() {
             <CardDescription>Rotas mais problemáticas</CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Rota</TableHead>
-                  <TableHead className="text-right">Voos</TableHead>
-                  <TableHead className="text-right">Atrasados</TableHead>
-                  <TableHead className="text-right">Taxa</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {stats.statsByRoute
-                  .sort((a, b) => b.delayPercentage - a.delayPercentage)
-                  .slice(0, 10)
-                  .map((stat, index) => (
-                    <TableRow
-                      key={`${stat.origin}-${stat.destination}-${index}`}
-                    >
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-1">
-                          <span className="font-semibold">{stat.origin}</span>
-                          <span className="text-gray-400">→</span>
-                          <span className="font-semibold">
-                            {stat.destination}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {stat.totalFlights}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {stat.delayedFlights}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Badge
-                          variant="secondary"
-                          className={getDelayColor(stat.delayPercentage)}
-                        >
-                          {formatPercentage(stat.delayPercentage)}
-                        </Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="min-w-[250px]">Rota</TableHead>
+                    <TableHead className="text-right">Voos</TableHead>
+                    <TableHead className="text-right">Atrasados</TableHead>
+                    <TableHead className="text-right">Taxa</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {stats.statsByRoute
+                    .sort((a, b) => b.delayPercentage - a.delayPercentage)
+                    .slice(0, 10)
+                    .map((stat, index) => (
+                      <TableRow
+                        key={`${stat.origin}-${stat.destination}-${index}`}
+                      >
+                        <TableCell className="font-medium">
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                              <div className="flex-1">
+                                <div className="font-semibold">{stat.origin}</div>
+                                <div className="text-xs text-gray-500" title={getAirportName(stat.origin)}>
+                                  {truncateText(getAirportName(stat.origin), 25)}
+                                </div>
+                              </div>
+                              <span className="text-gray-400">→</span>
+                              <div className="flex-1">
+                                <div className="font-semibold">{stat.destination}</div>
+                                <div className="text-xs text-gray-500" title={getAirportName(stat.destination)}>
+                                  {truncateText(getAirportName(stat.destination), 25)}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {stat.totalFlights}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {stat.delayedFlights}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Badge
+                            variant="secondary"
+                            className={getDelayColor(stat.delayPercentage)}
+                          >
+                            {formatPercentage(stat.delayPercentage)}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
