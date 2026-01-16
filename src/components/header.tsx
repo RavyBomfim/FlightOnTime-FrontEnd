@@ -22,7 +22,7 @@ export default function Header() {
 
   return (
     <header className="bg-[#353535] text-white shadow-md">
-      <div className="container mx-auto flex items-center justify-between py-4 px-4 md:px-8">
+      <div className="container mx-auto flex items-center justify-between py-2 px-4 md:px-8">
         {/* Logo */}
         <Link
           to="/"
