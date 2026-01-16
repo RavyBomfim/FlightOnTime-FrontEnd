@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
 import { useAuth } from "@/contexts/AuthContext";
 import { apiService } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -50,34 +49,6 @@ export default function RegisterPage() {
     }
   };
 
-  const handleGoogleSuccess = async (credentialResponse: any) => {
-    setError("");
-    setSuccess("");
-    setLoading(true);
-
-    try {
-      if (!credentialResponse.credential) {
-        throw new Error("Credencial do Google não recebida");
-      }
-
-      const response = await apiService.googleLogin(
-        credentialResponse.credential
-      );
-      login(response.token);
-      navigate("/dashboard");
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Erro ao fazer login com Google"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleError = () => {
-    setError("Erro ao fazer login com Google");
-  };
-
   return (
     <div className="h-full flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm border-none">
@@ -99,20 +70,6 @@ export default function RegisterPage() {
                 <AlertDescription>{success}</AlertDescription>
               </Alert>
             )}
-
-            <div className="flex justify-center">
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={handleGoogleError}
-                text="signup_with"
-                width="340"
-                theme="filled_blue"
-              />
-            </div>
-
-            <div className="flex justify-center items-center gap-2 opacity-60">
-              <hr className="w-full" /> ou <hr className="w-full" />
-            </div>
 
             <div className="space-y-2">
               <Input
