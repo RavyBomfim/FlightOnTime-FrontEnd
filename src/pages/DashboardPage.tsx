@@ -356,29 +356,35 @@ export default function DashboardPage() {
                     <Cloud className="h-5 w-5 mr-2" />
                     Condições Meteorológicas
                   </h3>
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="text-center p-3 bg-background rounded-lg">
-                      <Thermometer className="h-5 w-5 mx-auto mb-1 text-blue-600" />
-                      <p className="text-xs text-gray-500">Temperatura</p>
-                      <p className="font-semibold text-sm">
-                        {prediction.weather.temperature}
-                      </p>
+                  {prediction.weather ? (
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="text-center p-3 bg-background rounded-lg">
+                        <Thermometer className="h-5 w-5 mx-auto mb-1 text-blue-600" />
+                        <p className="text-xs text-gray-500">Temperatura</p>
+                        <p className="font-semibold text-sm">
+                          {prediction.weather.temperature}
+                        </p>
+                      </div>
+                      <div className="text-center p-3 bg-background rounded-lg">
+                        <Droplets className="h-5 w-5 mx-auto mb-1 text-blue-600" />
+                        <p className="text-xs text-gray-500">Precipitação</p>
+                        <p className="font-semibold text-sm">
+                          {prediction.weather.precipitation}
+                        </p>
+                      </div>
+                      <div className="text-center p-3 bg-background rounded-lg">
+                        <Wind className="h-5 w-5 mx-auto mb-1 text-blue-600" />
+                        <p className="text-xs text-gray-500">Vento</p>
+                        <p className="font-semibold text-sm">
+                          {prediction.weather.windSpeed}
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-center p-3 bg-background rounded-lg">
-                      <Droplets className="h-5 w-5 mx-auto mb-1 text-blue-600" />
-                      <p className="text-xs text-gray-500">Precipitação</p>
-                      <p className="font-semibold text-sm">
-                        {prediction.weather.precipitation}
-                      </p>
-                    </div>
-                    <div className="text-center p-3 bg-background rounded-lg">
-                      <Wind className="h-5 w-5 mx-auto mb-1 text-blue-600" />
-                      <p className="text-xs text-gray-500">Vento</p>
-                      <p className="font-semibold text-sm">
-                        {prediction.weather.windSpeed}
-                      </p>
-                    </div>
-                  </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">
+                      Dados meteorológicos não disponíveis
+                    </p>
+                  )}
                 </div>
               </CardContent>
             </Card>
