@@ -21,7 +21,7 @@ import { Filter } from "lucide-react";
 
 export default function FlightsPage() {
   const [filter, setFilter] = useState<"all" | "delayed" | "ontime">("all");
-  const { flights, airlines, refetchFlights } = useData();
+  const { flights, airlines, airports, refetchFlights } = useData();
 
   useEffect(() => {
     if (flights.length === 0) {
@@ -142,18 +142,18 @@ export default function FlightsPage() {
                         </TableCell>
                         <TableCell
                           title={
-                            airlines.find(
-                              (a) => a.airlineCode === flight.origin
-                            )?.airlineName || flight.origin
+                            airports.find(
+                              (a) => a.airportCode === flight.origin
+                            )?.airportName || flight.origin
                           }
                         >
                           {flight.origin}
                         </TableCell>
                         <TableCell
                           title={
-                            airlines.find(
-                              (a) => a.airlineCode === flight.destination
-                            )?.airlineName || flight.destination
+                            airports.find(
+                              (a) => a.airportCode === flight.destination
+                            )?.airportName || flight.destination
                           }
                         >
                           {flight.destination}

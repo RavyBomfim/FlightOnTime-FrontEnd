@@ -136,8 +136,7 @@ class ApiService {
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(error || "Erro ao registrar usuário");
+      throw new Error("Erro ao registrar usuário");
     }
 
     return response.text();
@@ -165,8 +164,7 @@ class ApiService {
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(error || "Erro ao fazer login com Google");
+      throw new Error("Erro ao fazer login com Google");
     }
 
     return response.json();
@@ -182,8 +180,7 @@ class ApiService {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.detail || error.erro || "Erro ao fazer predição");
+      throw new Error("Erro ao fazer predição");
     }
 
     return response.json();
