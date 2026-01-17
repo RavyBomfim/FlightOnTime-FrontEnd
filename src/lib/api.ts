@@ -151,8 +151,7 @@ class ApiService {
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(error || "Erro ao fazer login");
+      throw new Error("Usuário ou senha inválido");
     }
 
     return response.json();

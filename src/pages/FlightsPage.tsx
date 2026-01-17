@@ -122,7 +122,7 @@ export default function FlightsPage() {
                       <TableHead>Partida</TableHead>
                       <TableHead>Distância</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Probabilidade de Atraso</TableHead>
+                      <TableHead>Prob. de Atraso</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -140,8 +140,24 @@ export default function FlightsPage() {
                         >
                           {flight.airline}
                         </TableCell>
-                        <TableCell>{flight.origin}</TableCell>
-                        <TableCell>{flight.destination}</TableCell>
+                        <TableCell
+                          title={
+                            airlines.find(
+                              (a) => a.airlineCode === flight.origin
+                            )?.airlineName || flight.origin
+                          }
+                        >
+                          {flight.origin}
+                        </TableCell>
+                        <TableCell
+                          title={
+                            airlines.find(
+                              (a) => a.airlineCode === flight.destination
+                            )?.airlineName || flight.destination
+                          }
+                        >
+                          {flight.destination}
+                        </TableCell>
                         <TableCell>
                           {formatDate(flight.scheduledDepartureDate)}
                         </TableCell>
