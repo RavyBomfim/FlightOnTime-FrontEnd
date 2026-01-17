@@ -2,7 +2,7 @@
 FROM node:20-alpine AS builder
 
 # Build arguments for environment variables (Vite needs them at build time)
-ARG VITE_API_BASE_URL
+ARG VITE_API_BASE_URL=https://flightontime.top/api
 ARG VITE_GOOGLE_CLIENT_ID
 ARG APP_VERSION=1.0.0
 
