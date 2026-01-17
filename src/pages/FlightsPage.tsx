@@ -21,7 +21,7 @@ import { Filter } from "lucide-react";
 
 export default function FlightsPage() {
   const [filter, setFilter] = useState<"all" | "delayed" | "ontime">("all");
-  const { flights, refetchFlights } = useData();
+  const { flights, airlines, refetchFlights } = useData();
 
   useEffect(() => {
     if (flights.length === 0) {
@@ -63,7 +63,7 @@ export default function FlightsPage() {
   };
 
   const formatProbability = (prob: number) => {
-    return (prob * 100).toFixed(1) + "%";
+    return (prob * 100).toFixed(0) + "%";
   };
 
   return (
@@ -122,7 +122,7 @@ export default function FlightsPage() {
                       <TableHead>Partida</TableHead>
                       <TableHead>Distância</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Probabilidade</TableHead>
+                      <TableHead>Probabilidade de Atraso</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -131,7 +131,15 @@ export default function FlightsPage() {
                         <TableCell className="font-medium">
                           {flight.id}
                         </TableCell>
-                        <TableCell>{flight.airline}</TableCell>
+                        <TableCell
+                          title={
+                            airlines.find(
+                              (a) => a.airlineCode === flight.airline
+                            )?.airlineName || flight.airline
+                          }
+                        >
+                          {flight.airline}
+                        </TableCell>
                         <TableCell>{flight.origin}</TableCell>
                         <TableCell>{flight.destination}</TableCell>
                         <TableCell>
