@@ -300,8 +300,9 @@ export default function DashboardPage() {
                     </span>
                   </div>
                   <p className="text-sm text-gray-600 mt-2">
-                    {prediction !== null ? "Probabilidade de atraso" : ""}
-                    
+                    {prediction.predict.predictionResult === "Atrasado"
+                      ? "Probabilidade de atraso"
+                      : "Probabilidade de pontualidade"}
                   </p>
                 </div>
 
