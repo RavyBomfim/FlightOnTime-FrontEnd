@@ -80,6 +80,7 @@ export default function Header() {
                   isActive("/stats") ? "text-blue-400 font-semibold" : ""
                 }`}
               >
+                
                 Estatísticas
               </Link>
               <Button

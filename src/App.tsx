@@ -8,6 +8,7 @@ import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import FlightsPage from "./pages/FlightsPage";
 import StatsPage from "./pages/StatsPage";
+import AboutUs from "./pages/About";
 import "./App.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
@@ -48,6 +49,12 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                <Route 
+                path="/about" 
+                element={
+                  
+                    <AboutUs />
+                } />
               </Routes>
             </main>
             <Footer />
