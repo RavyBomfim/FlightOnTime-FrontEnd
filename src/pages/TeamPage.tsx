@@ -51,6 +51,8 @@ const teamMembers = [
   },
 ];
 
+// teste
+
 export default function TeamPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pt-0 pb-12 px-4">
