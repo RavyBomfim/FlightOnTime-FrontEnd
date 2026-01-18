@@ -6,6 +6,8 @@ import {
 } from "../components/ui/card";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
+// teste
+
 const teamMembers = [
   {
     name: "Daniel Borges Crema",
