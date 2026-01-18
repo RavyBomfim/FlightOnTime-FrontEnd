@@ -82,6 +82,14 @@ export default function Header() {
               >
                 Estatísticas
               </Link>
+              <Link
+                to="/team"
+                className={`hover:text-blue-300 transition-colors ${
+                  isActive("/team") ? "text-blue-400 font-semibold" : ""
+                }`}
+              >
+                Equipe
+              </Link>
               <Button
                 variant="ghost"
                 size="sm"
@@ -94,6 +102,14 @@ export default function Header() {
             </>
           ) : (
             <>
+              <Link
+                to="/team"
+                className={`hover:text-blue-300 transition-colors ${
+                  isActive("/team") ? "text-blue-400 font-semibold" : ""
+                }`}
+              >
+                Equipe
+              </Link>
               <Link
                 to="/login"
                 className={`hover:text-blue-300 transition-colors ${
@@ -137,6 +153,15 @@ export default function Header() {
               onClick={closeMobileMenu}
             >
               Início
+            </Link>
+            <Link
+              to="/team"
+              className={`hover:text-blue-300 transition-colors py-2 ${
+                isActive("/team") ? "text-blue-400 font-semibold" : ""
+              }`}
+              onClick={closeMobileMenu}
+            >
+              Equipe
             </Link>
             {isAuthenticated ? (
               <>

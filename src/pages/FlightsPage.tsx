@@ -68,8 +68,33 @@ export default function FlightsPage() {
 
   return (
     <div className="h-full bg-background">
+      <div className="relative w-full flex flex-col items-center mb-0 py-10">
+        {/* Logo de Fundo (Atrás do Título) */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          <img
+            src="alcateia-logo.png"
+            alt=""
+            className="w-64 md:w-125 opacity-[0.05] grayscale blur-[2px] transition-all duration-700 group-hover:opacity-10"
+          />
+        </div>
+
+        <div className="relative z-10 text-center">
+          <h1 className="text-5xl md:text-7xl font-extrabold text-sky-100 tracking-tighter drop-shadow-2xl0 mb-2">
+            Voos
+          </h1>
+          <span className="text-xs md:text-sm font-black uppercase tracking-[0.4em] text-primary/60 block">
+            Histórico de predições de voos realizadas
+          </span>
+
+          <div className="flex items-center justify-center gap-3 mt-6">
+            <div className="h-px w-12 bg-linear-to-r from-transparent to-primary" />
+            <div className="size-2 rounded-full border-2 border-primary bg-background" />
+            <div className="h-px w-12 bg-linear-to-l from-transparent to-primary" />
+          </div>
+        </div>
+      </div>
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         <Card className="border-none">
           <CardHeader>
             <div className="flex items-center justify-between">

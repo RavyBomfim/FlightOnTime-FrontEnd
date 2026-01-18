@@ -12,6 +12,8 @@ import "./App.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
 
+import TeamPage from "./pages/TeamPage";
+
 function App() {
   return (
     <AuthProvider>
@@ -48,6 +50,7 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                <Route path="/team" element={<TeamPage />} />
               </Routes>
             </main>
             <Footer />

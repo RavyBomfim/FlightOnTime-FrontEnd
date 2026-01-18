@@ -106,13 +106,31 @@ export default function StatsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Estatísticas de Voos</h1>
-        <p className="text-gray-500">
-          Análise completa de desempenho e pontualidade
-        </p>
+    <div className="container mx-auto px-4 pb-8">
+      <div className="relative w-full flex flex-col items-center mb-0 py-10">
+        {/* Logo de Fundo (Atrás do Título) */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          <img
+            src="alcateia-logo.png"
+            alt=""
+            className="w-64 md:w-125 opacity-[0.05] grayscale blur-[2px] transition-all duration-700 group-hover:opacity-10"
+          />
+        </div>
+
+        <div className="relative z-10 text-center">
+          <h1 className="text-5xl md:text-7xl font-extrabold text-sky-100 tracking-tighter drop-shadow-2xl0 mb-2">
+            Estatísticas
+          </h1>
+          <span className="text-xs md:text-sm font-black uppercase tracking-[0.4em] text-primary/60 block">
+            Análise completa de desempenho e pontualidade
+          </span>
+
+          <div className="flex items-center justify-center gap-3 mt-6">
+            <div className="h-px w-12 bg-linear-to-r from-transparent to-primary" />
+            <div className="size-2 rounded-full border-2 border-primary bg-background" />
+            <div className="h-px w-12 bg-linear-to-l from-transparent to-primary" />
+          </div>
+        </div>
       </div>
 
       {/* Overall Stats Cards */}
@@ -379,16 +397,32 @@ export default function StatsPage() {
                           <div className="space-y-2">
                             <div className="flex items-center gap-2">
                               <div className="flex-1">
-                                <div className="font-semibold">{stat.origin}</div>
-                                <div className="text-xs text-gray-500" title={getAirportName(stat.origin)}>
-                                  {truncateText(getAirportName(stat.origin), 25)}
+                                <div className="font-semibold">
+                                  {stat.origin}
+                                </div>
+                                <div
+                                  className="text-xs text-gray-500"
+                                  title={getAirportName(stat.origin)}
+                                >
+                                  {truncateText(
+                                    getAirportName(stat.origin),
+                                    25
+                                  )}
                                 </div>
                               </div>
                               <span className="text-gray-400">→</span>
                               <div className="flex-1">
-                                <div className="font-semibold">{stat.destination}</div>
-                                <div className="text-xs text-gray-500" title={getAirportName(stat.destination)}>
-                                  {truncateText(getAirportName(stat.destination), 25)}
+                                <div className="font-semibold">
+                                  {stat.destination}
+                                </div>
+                                <div
+                                  className="text-xs text-gray-500"
+                                  title={getAirportName(stat.destination)}
+                                >
+                                  {truncateText(
+                                    getAirportName(stat.destination),
+                                    25
+                                  )}
                                 </div>
                               </div>
                             </div>

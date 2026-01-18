@@ -124,12 +124,37 @@ export default function DashboardPage() {
   return (
     <div className="h-full bg-background flex items-center justify-center">
       {/* Main Content */}
-      <main className="w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        <div className="relative w-full flex flex-col items-center mb-0 py-10">
+          {/* Logo de Fundo (Atrás do Título) */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+            <img
+              src="alcateia-logo.png"
+              alt=""
+              className="w-64 md:w-125 opacity-[0.05] grayscale blur-[2px] transition-all duration-700 group-hover:opacity-10"
+            />
+          </div>
+
+          <div className="relative z-10 text-center">
+            <h1 className="text-5xl md:text-6xl font-extrabold text-sky-100 tracking-tighter drop-shadow-2xl0 mb-2">
+              Predição de Voos
+            </h1>
+            <span className="text-xs md:text-sm font-black uppercase tracking-[0.4em] text-primary/60 block">
+              Obtenha predições precisas de atrasos de voos
+            </span>
+
+            <div className="flex items-center justify-center gap-3 mt-6">
+              <div className="h-px w-12 bg-linear-to-r from-transparent to-primary" />
+              <div className="size-2 rounded-full border-2 border-primary bg-background" />
+              <div className="h-px w-12 bg-linear-to-l from-transparent to-primary" />
+            </div>
+          </div>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Form Card */}
           <Card className="border-none">
             <CardHeader>
-              <CardTitle>Nova Predição</CardTitle>
+              <CardTitle className="text-xl -mb-1">Nova Predição</CardTitle>
               <CardDescription>
                 Preencha os dados do voo para obter a predição de atraso
               </CardDescription>
@@ -271,7 +296,9 @@ export default function DashboardPage() {
           {prediction && (
             <Card className="lg:sticky lg:top-8 h-fit border-none">
               <CardHeader>
-                <CardTitle>Resultado da Predição</CardTitle>
+                <CardTitle className="text-xl -mb-1">
+                  Resultado da Predição
+                </CardTitle>
                 <CardDescription>Análise preditiva do voo</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
