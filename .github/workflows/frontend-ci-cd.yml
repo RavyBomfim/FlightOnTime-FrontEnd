@@ -57,5 +57,5 @@ jobs:
             docker rm frontend || true
             docker run -d \
               --name frontend \
-              -p 80:8080 \
+              -p 3001:8080 \
               flightontime/flightontime-frontend:latest
