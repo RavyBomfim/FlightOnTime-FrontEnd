@@ -45,10 +45,10 @@ const teamMembers = [
     role: "Data Scientist",
   },
   {
-    name: "Ravy Bomfim",
+    name: "Ravieli Bomfim",
     picture: "ravy.jpeg",
     github: "https://github.com/RavyBomfim",
-    linkedin: "https://linkedin.com/in/ravybomfim",
+    linkedin: "https://linkedin.com/in/ravieli-bomfim",
     role: "Data Engineer",
   },
 ];
